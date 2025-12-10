@@ -22,7 +22,7 @@ npm -v
 
 Clone the Repository:
 
-git clone https://github.com/chahatmandviwala-alt/WalletConnect.git
+git clone git@github.com:chahatmandviwala-alt/WalletConnect.git
 
 cd WalletConnect
 
