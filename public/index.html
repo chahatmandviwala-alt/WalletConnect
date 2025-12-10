@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Wallet Connect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --bg: #fafbfc;
+    --text: #0f172a;
+    --muted:#475569;
+    --border:#e2e8f0;
+    --panel:#ffffff;
+    --accent:#0ea5e9;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+    --radius: 10px;
+  }
+  /* Dark mode support */
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#0b0f14; --text:#e5e7eb; --muted:#94a3b8; --border:#1f2937; --panel:#0f1520; --accent:#38bdf8;
+    }
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:var(--sans); background:var(--bg); color:var(--text); min-height: 100vh; display: flex; flex-direction: column;   }
+  .wrap{ max-width:900px; margin:auto; padding:32px 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;   }
+  h1{ font-size:1.15rem; margin:0 0 16px 0; }
+  .section{
+    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px; margin-bottom:16px;
+    display: flex; flex-direction: column;
+    align-self: stretch;
+  }
+  .muted{ color:var(--muted); font-size:.95rem; }
+  label{ display:block; font-weight:600; margin:6px 0 6px; }
+  input[type=text], textarea{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px;
+    background:transparent; color:inherit; outline:none;
+  }
+  input[type=text]:focus, textarea:focus{ border-color:var(--accent); }
+  textarea{ min-height:80px; resize:vertical; }
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+  @media (max-width:640px){ .row{ grid-template-columns:1fr; } }
+  .btn{
+    display:inline-block; padding:10px 14px; border-radius:8px; border:1px solid var(--accent);
+    color:#fff; background:var(--accent); font-weight:600; cursor:pointer; margin-top:12px;
+  }
+  .btn.secondary{ background:transparent; color:var(--accent); }
+  .mono{ font-family:var(--mono); word-break:break-all; }
+  .codebox{
+    border:1px solid var(--border); border-radius:8px; padding:10px 12px; background:transparent;
+    flex-grow: 1;
+  }
+  .flex{ display:flex; gap:12px; flex-wrap:wrap; }
+  #qr {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border:1px solid var(--border); border-radius:8px; background:#fff;
+  }
+
+  /* Layout container */
+  .grid-container {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr; /* Single column on small screens */
+    align-items: stretch;
+  }
+  @media (min-width: 640px) {
+    .grid-container {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+    /* Make the top "Import Seedphrase" block span full width */
+    #input-block {
+      grid-column: 1 / -1;
+    }
+  }
+
+  #input-block .bottom-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  #input-block {
+    justify-content: flex-start;
+  }
+  
+  .stack{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .centered-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .centered-header h1 {
+    margin-bottom: 8px;
+  }
+  .subheading {
+    color: var(--muted);
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .footnote {
+    font-size: 0.8rem;
+    color: #ef4444;
+    margin-top: 2px;
+    margin-bottom: 0;
+  }
+  
+
+  /* hidden utility class for conditional sections */
+  .hidden {
+    display: none !important;
+  }
+  
+#qr-footnote {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;    /* prevents wrapping */
+  display: block;
+  margin-top: -18px;
+  grid-column: 1 / -1;    /* ensures full-width in your grid layout */
+}
+  
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="centered-header">
+      <h1>Wallet Connect</h1>
+      <p class="subheading">Connect any paper wallet to Metamask/Rabby as a hardware wallet</p>
+    </header>
+
+    <div class="grid-container">
+      <!-- TOP: full-width input block -->
+      <section class="section" id="input-block">
+        <label>Import seedphrase</label>
+        <textarea id="mnemonic" placeholder="Enter your 12/24 word mnemonic seedphrase "></textarea>
+        <p class="footnote">Tip: Use this tool on an air-gapped machine for maximum security.</p>
+        <p class="footnote"></p>
+		<p class="footnote"></p>
+        <p class="footnote"></p>
+		<p class="footnote"></p>
+		<div class="row">
+          <div>
+            <label>Passphrase (optional)</label>
+            <input id="passphrase" type="text" placeholder="(leave empty if none)" />
+          </div>
+          <div>
+            <label>Derivation path</label>
+            <input id="path" type="text" value="m/44'/60'/0'" />
+          </div>
+        </div>
+
+        <div class="bottom-controls">
+          <button id="go" class="btn">Confirm</button>
+          <div id="err" class="err"></div>
+        </div>
+      </section>
+
+      <!-- UR section: appears below input block after generation -->
+      <section class="section hidden" id="ur-section">
+        <div id="ur" class="codebox mono"></div>
+        <div class="flex">
+          <button id="copy" class="btn">Copy UR</button>
+          <button id="saveTxt" class="btn secondary">Download ur.txt</button>
+        </div>
+      </section>
+
+      <!-- QR section: appears next to UR on wide screens, below on narrow screens -->
+      <section class="section hidden" id="qr-section" style="align-items: center;">
+        <img id="qr" />
+        <div class="flex">
+          <button id="savePng" class="btn secondary">Download QR (PNG)</button>
+        </div>
+      </section>
+	  
+	  <!-- New footnote -->
+      <p id="qr-footnote" class="footnote hidden"> Connect to Metamask/Rabby: Add a hardware wallet  >  Select 'QR-based' / 'Keystone'  >  Scan the QR code. </p>
+    </div>
+  </div>
+
+<script>
+  async function gen() {
+    setErr(''); 
+    set('ur',''); 
+    document.getElementById('qr').src = '';
+
+    // hide UR + QR sections at the start of each generation attempt
+    document.getElementById('ur-section').classList.add('hidden');
+    document.getElementById('qr-section').classList.add('hidden');
+	document.getElementById('qr-footnote').classList.add('hidden');
+
+    try {
+      const mnemonic = get('mnemonic').trim();
+      if (!mnemonic) {
+        setErr('Please enter your seedphrase before confirming.');
+        return;
+      }
+
+      const body = {
+        mnemonic:  mnemonic,
+        passphrase:get('passphrase'),
+        path:      get('path').trim()
+      };
+
+      const resp = await fetch('/api/gen', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Unknown error');
+
+      // We no longer display path / FP details, only UR + QR
+      set('ur', data.ur);
+      document.getElementById('qr').src = data.qrDataUrl;
+      window.__lastUR = data.ur; 
+      window.__lastQR = data.qrDataUrl;
+
+      // SECURITY: clear sensitive inputs after successful generation
+      document.getElementById('mnemonic').value = '';
+      // Optional: also clear passphrase if you want
+      // document.getElementById('passphrase').value = '';
+
+      // Show UR + QR sections only after successful generation
+      document.getElementById('ur-section').classList.remove('hidden');
+      document.getElementById('qr-section').classList.remove('hidden');
+	  document.getElementById('qr-footnote').classList.remove('hidden');
+
+    } catch (e) { 
+      setErr(e.message || String(e)); 
+    }
+  }
+  function set(id, v){ document.getElementById(id).textContent = v; }
+  function get(id){ return document.getElementById(id).value; }
+  function setErr(t){ document.getElementById('err').textContent = t; }
+
+  document.getElementById('go').addEventListener('click', gen);
+  document.getElementById('copy').addEventListener('click', async () => {
+    if (!window.__lastUR) return;
+    try { await navigator.clipboard.writeText(window.__lastUR); alert('UR copied'); }
+    catch { alert('Clipboard blocked by browser'); }
+  });
+  document.getElementById('saveTxt').addEventListener('click', () => {
+    if (!window.__lastUR) return;
+    const a = document.createElement('a');
+    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(window.__lastUR);
+    a.download = 'ur.txt'; a.click();
+  });
+  document.getElementById('savePng').addEventListener('click', () => {
+    if (!window.__lastQR) return;
+    const a = document.createElement('a');
+    a.href = window.__lastQR; a.download = 'ur.png'; a.click();
+  });
+</script>
+</body>
+</html>

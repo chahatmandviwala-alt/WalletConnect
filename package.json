@@ -1,0 +1,16 @@
+{
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js & sleep 1 && xdg-open http://localhost:3001",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@ngraveio/bc-ur": "^1.1.13",
+    "bip32": "^5.0.0",
+    "bip39": "^3.1.0",
+    "cbor": "^10.0.11",
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "tiny-secp256k1": "^2.2.4"
+  }
+}
