@@ -21,10 +21,16 @@ The security concept behind using air-gapped systems for paper wallets is to wor
 
 ## Build
 
-First follow the steps below to install the dependencies:
+Clone the repo:
 
 ```bash
 $ git clone git:@github.com:chahatmandviwala-alt/WalletConnect.git
+```
+
+
+Install the dependencies:
+
+```bash
 $ npm install
 ```
 
