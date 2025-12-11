@@ -1,33 +1,51 @@
 # Wallet Connect
 
-A tool to connect any paper wallet to Metamask/Rabby as a hardware wallet.
+
+Connect any paper wallet to Metamask/Rabby as a hardware wallet.
 
 Warning: Use this tool only on a permanently air-gapped machine for maximum security. Never enter your paper wallet seedphrase on a device that connects to internet.
 
+## Description
 
-Prerequisites
+- TBC
 
-Before proceeding, ensure the following are installed:
+## Features
 
-Node.js (recommended LTS version)
+- TBC
+- TBC
+- TBC
 
-npm (included with Node.js)
+## Security
 
-Verify installation:
+The security concept behind using air-gapped systems for paper wallets is to work with two physically separated devices, one of which has no connection to the outside world or any network. In this context, connecting your paper wallet with Metamask/Rabby allows you to watch your paper wallet and sign transactions through one-way communication using QR codes. This tool is only for connect paper wallet to Metamask or Rabby. For signing transactions after connecting the paper wallet, it is advised to use another tool ('https://github.com/chahatmandviwala-alt/Offline-Ethereum-Wallet').
 
-node -v
+## Build
 
-npm -v
+First follow the steps below to install the dependencies:
+
+```bash
+$ git clone git:@github.com:chahatmandviwala-alt/WalletConnect.git
+$ npm install
+```
+
+Run locally in any browser:
+
+```bash
+$ npm run start
+```
+
+Alternatively run locally in default browser:
+
+```bash
+$ ./WalletConnect.bat
+```
 
 
-Clone the Repository:
+## Disclosing Security Vulnerabilities
 
-git clone git@github.com:chahatmandviwala-alt/WalletConnect.git
+If you discover a security vulnerability within this application, please send an e-mail to chahat.mandviwala@gmail.com. All security vulnerabilities will be promptly addressed.
 
-cd WalletConnect
 
-npm install
+## Related Projects
 
-npm start
-
-(Alternatively, you can double-click the Wallet-Connect windows batch file after 'npm install' to start the program on a windows PC)
+- [Offline Ethereum Wallet] (https://github.com/chahatmandviwala-alt/Offline-Ethereum-Wallet
