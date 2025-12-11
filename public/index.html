@@ -24,14 +24,21 @@
   }
   *{ box-sizing:border-box; }
   body{ margin:0; font-family:var(--sans); background:var(--bg); color:var(--text); min-height: 100vh; display: flex; flex-direction: column;   }
-  .wrap{ max-width:900px; margin:auto; padding:32px 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;   }
+  .wrap{ max-width:600px;  margin:auto;  padding:32px 16px; flex-grow: 1;   display: flex;   flex-direction: column;   justify-content: center;  width: 100%;  }
   h1{ font-size:1.15rem; margin:0 0 16px 0; }
-  .section{
-    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
-    padding:16px; margin-bottom:16px;
-    display: flex; flex-direction: column;
+  .section {
+    background:var(--panel);
+    border:3px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:2px;
+    display: flex;
+    flex-direction: column;
     align-self: stretch;
+    width: 100%;      /* ensure blocks stay within their column */
+    max-width: 100%;  /* guard against overflow */
   }
+  
   .muted{ color:var(--muted); font-size:.95rem; }
   label{ display:block; font-weight:600; margin:6px 0 6px; }
   input[type=text], textarea{
@@ -63,7 +70,7 @@
   /* Layout container */
   .grid-container {
     display: grid;
-    gap: 16px;
+    gap: 8px;
     grid-template-columns: 1fr; /* Single column on small screens */
     align-items: stretch;
   }
@@ -117,7 +124,8 @@
 
   /* hidden utility class for conditional sections */
   .hidden {
-    display: none !important;
+    visibility: hidden;   /* keeps space but hides contents */
+	opacity: 0;
   }
   
 #qr-footnote {
@@ -125,8 +133,18 @@
   text-align: center;
   white-space: nowrap;    /* prevents wrapping */
   display: block;
-  margin-top: -18px;
+  margin-top: 0px;
   grid-column: 1 / -1;    /* ensures full-width in your grid layout */
+}
+
+#ur {
+  font-size: 0.75rem; /* adjust as needed */
+  line-height: 1.2;
+}
+
+#ur-section,
+#qr-section {
+  min-height: 200px;   /* adjust as needed */
 }
   
 </style>
@@ -161,7 +179,7 @@
 
         <div class="bottom-controls">
           <button id="go" class="btn">Confirm</button>
-          <div id="err" class="err"></div>
+          <div id="err" style="font-size: 12px; color: gray; margin-top:4px;"></div>
         </div>
       </section>
 
@@ -183,7 +201,7 @@
       </section>
 	  
 	  <!-- New footnote -->
-      <p id="qr-footnote" class="footnote hidden"> Connect to Metamask/Rabby: Add a hardware wallet  >  Select 'QR-based' / 'Keystone'  >  Scan the QR code. </p>
+      <p id="qr-footnote" class="footnote hidden"> Connect to Metamask/Rabby: Add hardware wallet  >  Select QR-based/Keystone  >  Scan the QR code. </p>
     </div>
   </div>
 
