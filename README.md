@@ -24,7 +24,7 @@ The security concept behind using air-gapped systems for paper wallets is to wor
 Clone the repo:
 
 ```bash
-$ git clone git:@github.com:chahatmandviwala-alt/WalletConnect.git
+$ git clone git@github.com:chahatmandviwala-alt/WalletConnect.git
 ```
 
 
